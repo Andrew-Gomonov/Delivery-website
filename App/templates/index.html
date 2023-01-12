@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+	<div class="left-column">
+			{%if newsList%}
+				{% for news in newsList %}
+					<div class="card">
+						<img src="{{news['image']}}">
+						<h2><a href="/news/{{news['id']}}">{{news['title']}}</a></h2>
+						<time id="datetime_">{{news['datetime']}}</time>
+						<p>{{news['content']}}</p>
+						<h4 id="author_">Author {{news['author']}}</h4>
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="no-news">
+					<h1>No news</h1>
+				</div>
+			{% endif %}
+		</div>
+		<div class="right-column">
+			<div class="about">
+				<h2>About Tiande</h2>
+				<img src="{{url_for('static', filename='images/TianDe-Logo-700x394.png')}}" style="height:150px;">
+				<p>
+					TianDe is a Russian cosmetic brand operating on a multilevel distribution system for beauty and health products.
+					The company was founded in 2007 in the city of Barnaul (Russia).
+					The basis of her business is ancient Altai and Chinese recipes.
+					Therefore, she specializes in the production of pharmaceutical products – natural care products that safely monitor skin and hair condition.
+					She also sells perfumes and make-up products, distributing her products in 32 countries around the world.
+				</p>
+			  </div>
+			  <div class="most-active">
+				<h3>Most active courier</h3>
+				<img src="{{url_for('static', filename='avatars/850b024263')}}">
+				<h2>Andrew</h2>
+				<h4>63</h4>
+			  </div>
+			  <div class="social-networks">
+				<h3>Social Networks</h3>
+				<a href="https://vk.com/tiandemedia" target="_blank">
+					<img src="{{url_for('static', filename='images/vk.png')}}">
+				</a>
+				  <a href="https://www.tiktok.com/@tiande_official/" target="_blank">
+					  <img src="{{url_for('static', filename='images/tik-tok.png')}}">
+				  </a>
+				<a href="https://www.youtube.com/user/Tiandechannel" target="_blank">
+					<img src="{{url_for('static', filename='images/youtube.png')}}">
+				</a>
+			  </div>
+		</div>
+{% endblock %}

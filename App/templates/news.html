@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/news.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="news">
+	{% if news %}
+		<img src="{{news['image']}}">
+		<h2>{{news['title']}}</h2>
+		<p>{{news['content']}}</p>
+		<h4 >Author {{news['author']}}</h4>
+		<time>{{news['datetime']}}</time>
+	{% endif %}
+</div>
+{% endblock %}

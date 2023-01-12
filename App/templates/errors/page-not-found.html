@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>404 Not found</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/http_errors.css')}}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images/favicon.ico')}}">
+</head>
+<body>
+<div class="page_error">
+	<img src="{{url_for('static', filename='images/error.gif')}}">
+    <div class="content_box_error">
+        <h1>404</h1>
+        <h3>Page not found</h3>
+        <a href="/"><button>Go to Home</button></a>
+    </div>
+</div>
+</body>
+</html>

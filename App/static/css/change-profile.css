@@ -1,0 +1,148 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #eee;
+}
+
+header {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top:0;
+    background-color: #333;
+    color: #fff;
+    padding: 18px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    text-align: center;
+}
+
+header h1 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+header nav a:hover {
+    color: #ddd;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+header nav li {
+    margin: 0 10px;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+header nav a:hover {
+    color: #ddd;
+}
+main {
+    height: 100%;
+}
+
+form {
+    margin-top: 8%;
+    width: 500px;
+    margin: 8% auto;
+    padding: 20px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form h2 {
+    margin: 0 0 20px 0;
+    font-size: 24px;
+    text-align: center;
+}
+
+
+form .form-group {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+form input[type="text"], form input[type="email"], form input[type="password"] {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+form input[type="submit"] {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.change-picture {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.change-picture img {
+    width: 30%;
+    height: 130px;
+    border-radius: 50%;
+}
+
+.change-picture input[type="file"] {
+    margin-top: 3%;
+    margin-left: 7%;
+}
+
+.change-picture span {
+    font-size: 12px;
+}
+
+form input[type="submit"]:hover {
+    background-color: #444;
+}
+.error {
+    color: red;
+}
+
+footer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: auto;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/change-profile.css')}}">
+{% endblock %}
+
+{% block content %}
+	<form action="/change-profile" method="post" enctype="multipart/form-data">
+			<h2>Change Profile</h2>
+			<div class="change-picture">
+				<img src="/static/{{ user.profile_picture }}" class="profile-picture">
+				<input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png,.gif">
+				<span>Maximum 5 megabyte</span>
+			</div>
+			<div class="form-group">
+				<label for="name">Name:</label>
+				<input type="text" id="name" name="name" value="{{ user.name }}">
+			</div>
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" value="{{ user.email }}">
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" id="password" name="password">
+			</div>
+			<div class="form-group">
+				<label for="password_confirm">Confirm Password:</label>
+				<input type="password" id="password_confirm" name="password_confirm">
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Update Profile">
+			</div>
+			{% if error %}
+				<p class="error">{{ error }}</p>
+        	{% endif %}
+		</form>
+{% endblock %}

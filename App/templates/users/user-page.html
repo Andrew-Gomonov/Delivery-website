@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/me.css')}}">
+{% endblock %}
+
+{% block content %}
+	<div class="profile-card">
+		  	<img src="{{url_for('static', filename=user.profile_picture)}}" class="profile-picture">
+		  	<h2>{{ user.name }}</h2>
+			<a href="/change-profile"><button class="change-profile">Change profile</button></a>
+			<ul class="profile-details">
+				<li>Email: {{ user.email }}</li>
+				{% if user.is_admin %}
+					<li>Role: Admin</li>
+				{% else %}
+					<li>Role: Curier</li>
+				{% endif %}
+				<li>Member since: {{ user.datetime }}</li>
+			</ul>
+	</div>
+	{% if user.is_admin %}
+	<a href="/create-new-order">
+		<div class="create_new_order_button">
+				<img src="{{url_for('static', filename='images/new.png')}}">
+				<span>Create new order</span>
+		</div>
+	</a>
+	{% endif %}
+	<table>
+		<thead>
+			<tr>
+			  <th>Order Number</th>
+			  <th>Product</th>
+			  <th>Quantity</th>
+			  <th>Phone</th>
+			  <th>Adress</th>
+			  <th>Price</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+				<td>1</td>
+				<td>10305 + 105301</td>
+				<td>6 + 7</td>
+				<td>067687399</td>
+				<td>Durlest,levizilor 3a</td>
+				<td>800</td>
+			</tr>
+
+		  </tbody>
+		</table>
+{% endblock %}
