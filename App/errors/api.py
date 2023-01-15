@@ -19,8 +19,8 @@ class APINotFoundError(APIError):
         super().__init__(self.message)
 
 
-class APIUnknownKeyError(APIError):
-    """Custom Unknown Key Error Class."""
+class APIBadRequestError(APIError):
+    """Custom Bad request Error Class."""
     def __init__(self, message, code=400):
         self.code = code
         self.message = message

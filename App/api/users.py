@@ -2,7 +2,7 @@ import bcrypt
 import jwt
 from flask import request, redirect, url_for
 from App.api.tokens import generate_auth_token
-from App.errors.api import APIAuthError, APINotFoundError, APIUnknownKeyError
+from App.errors.api import APIAuthError, APINotFoundError, APIBadRequestError
 from functools import wraps
 from App import cur, conn,  app
 
@@ -58,7 +58,7 @@ def create_user(data_user: dict) -> bool:
     """
     for key in data_user.keys():
         if key not in ['name', 'email', 'password', 'is_admin']:
-            raise APIUnknownKeyError("Unknown key in user dictionary")
+            raise APIBadRequestError("Unknown key in user dictionary")
     hashed_password = bcrypt.hashpw(data_user['password'].encode(), bcrypt.gensalt())
     cur.execute(
         "INSERT INTO Users (name, email, password,register_date,is_admin)"
@@ -98,7 +98,7 @@ def get_users() -> list[dict[str, str]]:
 def search_users(data_to_search: dict[str, str]):
     for key in data_to_search.keys():
         if key not in ['name', 'email', 'password', 'is_admin']:
-            raise APIUnknownKeyError("Unknown key in url")
+            raise APIBadRequestError("Unknown key in url")
     result = ""
     for key, value in data_to_search.items():
         if not value.isnumeric():
@@ -129,48 +129,38 @@ class User:
     """
     User crud(crud - create, read, update, delete)
     """
-    id = 0
-    name = ""
-    password = ""
-    email = ""
-    datetime = ""
-    is_admin = 0
-    profile_picture = ""
-
     # Constructor
     def __init__(self, user_id: int):
         cur.execute(f"select * from Users where id='{user_id}'")
         info = cur.fetchone()
         if info is None:
             raise APINotFoundError("User not found in database")
-        self.user_id = user_id
-        User.id = info[0]
-        User.name = info[1]
-        User.password = info[2]
-        User.email = info[3]
-        User.datetime = str(info[4])
-        User.is_admin = info[5]
-        User.profile_picture = info[6]
+        self.id: int = user_id
+        self.name: str = info[1]
+        self.password: str = info[2]
+        self.email: str = info[3]
+        self.datetime: str = str(info[4])
+        self.is_admin: int = info[5]
+        self.profile_picture: str = info[6]
 
     def __repr__(self):
-        return f'<User {User.name}>'
+        return f'<User {self.name}>'
 
-    @staticmethod
-    def to_dict():
+    def to_dict(self):
         """
-        Get user information by id
+        Get user information in dict
         :return: dictionary that contain id,name,email,
         password,registration date,is admin(1 - yes,0 - no),profile_picture
         """
         json_data = {}
         json_data.update({
-            "id": User.id,
-            "name": User.name,
-            "password": User.password,
-            "email": User.email,
-            "datetime": User.datetime,
-            "is_admin": User.is_admin,
-            "profile_picture": User.profile_picture,
+            "id": self.id,
+            "name": self.name,
+            "password": self.password,
+            "email": self.email,
+            "datetime": self.datetime,
+            "is_admin": self.is_admin,
+            "profile_picture": self.profile_picture,
         })
         return json_data
 
@@ -179,7 +169,7 @@ class User:
         Delete user by id
         :return: code and message
         """
-        cur.execute(f"DELETE FROM Users WHERE id='{self.user_id}'")
+        cur.execute(f"DELETE FROM Users WHERE id='{self.id}'")
         conn.commit()
         return True
 
@@ -191,13 +181,13 @@ class User:
         """
         for key in data_to_edit.keys():
             if key not in ['name', 'email', 'password', 'is_admin', 'profile_picture']:
-                raise APIUnknownKeyError("Unknown key in  user dictionary")
+                raise APIBadRequestError("Unknown key in  user dictionary")
         if 'password' in data_to_edit.keys():
             data_to_edit['password'] = bcrypt.hashpw(data_to_edit['password'].encode(), bcrypt.gensalt()).decode()
         result = ""
         for key, value in data_to_edit.items():
             result += f"{key} = '{value}',"
         result = result[:-1]
-        cur.execute(f"UPDATE Users SET {result} WHERE id='{self.user_id}'")
+        cur.execute(f"UPDATE Users SET {result} WHERE id='{self.id}'")
         conn.commit()
         return True

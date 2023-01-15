@@ -16,7 +16,7 @@ def api_error(error):
     return jsonify({"code": error.code, "message": error.message})
 
 
-@app.errorhandler(500)
+@app.errorhandler(Exception)
 def server_error(error):
     app.logger.error(error)
     return render_template('errors/server-error.html'), 500

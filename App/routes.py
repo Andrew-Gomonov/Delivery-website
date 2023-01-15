@@ -6,7 +6,8 @@ from hashlib import md5
 from App.api.news import get_news, News
 from App.api.users import User, login, auth_required, only_admins
 from App.api.utils import validate_image
-from App.errors.api import APIAuthError
+from App.api.orders import create_order, get_orders
+from App.errors.api import APIAuthError, APIBadRequestError, APINotFoundError
 from flask import render_template, request, make_response, redirect, url_for
 from App import app
 
@@ -25,11 +26,26 @@ def login_page():
         return render_template('users/login.html')
 
 
-@app.route('/create-new-order')
+@app.route('/create-new-order', methods=['GET', 'POST'])
 @auth_required
 @only_admins
 def create_new_order():
-    return render_template("admins/create-new-order.html")
+    if request.method == 'POST':
+        try:
+            create_order(request.form)
+        except APIBadRequestError as error:
+            return render_template(
+                "admins/create-new-order.html",
+                error=error
+            )
+        except APINotFoundError as error:
+            return render_template(
+                "admins/create-new-order.html",
+                not_found=error
+            )
+        return redirect(url_for("user_page"))
+    else:
+        return render_template("admins/create-new-order.html")
 
 
 @app.route('/me')
@@ -37,7 +53,8 @@ def create_new_order():
 def user_page():
     user_id = jwt.decode(request.cookies.get('token'), app.config['SECRET_KEY'], algorithms=['HS256'])['sub']
     user = User(user_id)
-    return render_template("users/user-page.html", user=user)
+    orders = get_orders()
+    return render_template("users/user-page.html", user=user, orders=orders)
 
 
 @app.route('/chat')
@@ -93,7 +110,7 @@ def change_profile():
                     # Checking if a file is an image
                     if photo.content_type.startswith('image') and photo_ext in app.config['UPLOAD_EXTENSIONS']  \
                             and photo_ext == validate_image(photo.stream):
-                        new_photo_name = md5(str(User.id).encode()).hexdigest()
+                        new_photo_name = md5(str(user.id).encode()).hexdigest()
                         photo.save(os.path.join(app.config['UPLOAD_FOLDER'], new_photo_name))
                         new_user_data['profile_picture'] = "avatars/"+new_photo_name
                     else:
@@ -118,8 +135,7 @@ def change_profile():
 @auth_required
 def news_page(news_id):
     news = News(news_id)
-    news_data = news.get()
-    return render_template('news.html', news=news_data)
+    return render_template('news.html', news=news)
 
 
 @app.route('/')
