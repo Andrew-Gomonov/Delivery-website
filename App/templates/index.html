@@ -5,7 +5,7 @@
 	{%if newsList%}
         {% for news in newsList %}
 			<div class="card mb-3 h-1">
-			<img class="card-img-top " src="{{news['image']}}" style="height:412px;">
+			<img class="card-img-top " src="{{news['image']}}" alt="profile picture" style="height:412px;">
 				<div class="card-body">
 					<h2 class="card-title">
 						<a class="text-decoration-none link-dark" href="/news/{{news['id']}}" id="title">{{news['title']}}</a>
