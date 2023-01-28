@@ -4,9 +4,9 @@
 		<div class="card" style="border: none;">
 			<h4 class="card-title mt-3 text-center">Change Profile</h4>
 			<div class="card-body">
-				<form action="{{url_for('main.edit_profile')}}" method="post" class="d-flex flex-column align-items-center " enctype="multipart/form-data">
+				<form action="{{ url_for('main.create_user_page') }}" method="post" class="d-flex flex-column align-items-center " enctype="multipart/form-data">
                     <div class="d-flex flex-column align-items-center text-center h-25 w-25 mt-3">
-						<img src="/static/{{ user.profile_picture }}" id="profile_picture" alt="profile picture" class="w-75 rounded-circle" style="height: 12em;">
+						<img src="{{ url_for('static', filename='avatars/default.png') }}" id="profile_picture" alt="profile picture" class="w-75 rounded-circle" style="height: 12em;">
 						<input
 								type="file" class="form-control mt-3 mb-1" name="photo"
 								id="new_photo" accept=".jpg,.jpeg,.png,.gif"
@@ -18,44 +18,47 @@
 						<label for="name">Name</label>
 						<input
 								type="text" class="form-control" name="name"
-								id="name" placeholder="Enter your name"
-						   	    value="{{ user.name }}"
-						>
-				  	</div>
-				  	<div class="form-group mt-3  w-50">
-						<label for="email">Email</label>
-						<input
-								type="email" class="form-control" name="email"
-								id="email"  placeholder="Enter your email"
-						   	    value="{{ user.email }}"
+								id="name" placeholder="Enter user name"
 						>
 				  	</div>
                     <div class="form-group mt-3  w-50">
 						<label for="phone">Phone</label>
 						<input
 								type="tel" class="form-control" name="phone"
-								id="phone"  placeholder="Enter your number phone"
-						   	    value="{{ user.phone }}"
+								id="phone"  placeholder="Enter user number phone"
 						>
 				  	</div>
+				  	<div class="form-group mt-3  w-50">
+						<label for="email">Email</label>
+						<input
+								type="email" class="form-control" name="email"
+								id="email"  placeholder="Enter user email"
+						>
+				  	</div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" name="is_admin" id="checkbox_is_admin">
+                      <label class="form-check-label" for="checkbox_is_admin">
+                        Is admin?
+                      </label>
+                    </div>
 				  	<div class="form-group mt-3   w-50">
 						<label for="password">Password</label>
 						<input  autocomplete="new-password"
                                 type="password" class="form-control" name="password"
-								id="password" placeholder="Enter your password"
+								id="password" placeholder="Enter user password"
 						>
 				  	</div>
 				  	<div class="form-group mt-3   w-50">
 						<label for="password-confirm">Confirm Password</label>
 						<input
 								type="password" class="form-control" name="password_confirm"
-								id="password-confirm" placeholder="Confirm your password"
+								id="password-confirm" placeholder="Confirm user password"
 						>
 				  	</div>
 					{% if error %}
 						<p class="text-danger mt-3">{{ error }}</p>
         			{% endif %}
-				  	<button type="submit" class="btn btn-primary text-center   mt-3   w-25">Update Profile</button>
+				  	<button type="submit" class="btn btn-primary text-center   mt-3   w-25">Create user</button>
 				</form>
 			</div>
 		</div>

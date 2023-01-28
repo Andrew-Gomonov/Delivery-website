@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+	<main class="container" style="margin-bottom: 5%;margin-top:5%;">
+		<div class="card" style="border: none;">
+			<h4 class="card-title mt-3 text-center">Create product</h4>
+			<div class="card-body">
+				<form action="{{ url_for('main.admin_update_product',product_id=product['id']) }}" method="post" class="d-flex flex-column align-items-center " enctype="multipart/form-data">
+                    <div class="d-flex flex-column align-items-center text-center h-25 w-25 mt-3">
+						<img src="{{ url_for('static',filename=product['image']) }}" id="product_picture" alt="product picture" class="w-75 rounded-circle" style="height: 12em;">
+						<input
+								type="file" class="form-control mt-3 mb-1" name="photo"
+								id="new_photo" accept=".jpg,.jpeg,.png,.gif"
+								style="width:70%;height: 25%;font-size:11px"
+						>
+						<span class="text-muted m-2" style="font-size: 10px">Maximum 5 megabyte</span>
+					</div>
+				  	<div class="form-group w-50">
+						<label for="productName">Name</label>
+						<input
+								type="text" class="form-control" name="name"
+								id="productName" placeholder="Enter product name"
+                                value="{{ product['name'] }}"
+						>
+				  	</div>
+                    <div class="form-group mt-3  w-50">
+						<label for="productVendorCode">Vendor code</label>
+						<input
+								type="number" class="form-control" name="vendorCode"
+								id="productVendorCode"  placeholder="Enter product vendor code"
+                                value="{{ product['vendor_code'] }}"
+						>
+				  	</div>
+                    <div class="form-group mt-3  w-50">
+						<label for="productDescription">Description</label>
+						<textarea class="form-control"
+                                  id="productDescription" name="description"
+                                  rows="6">{{ product['description'] }}
+                        </textarea>
+				  	</div>
+				  	<div class="form-group mt-3   w-50">
+						<label for="productPrice">Price</label>
+						<input type="number" class="form-control" name="price"
+                               id="productPrice" placeholder="Enter product price"
+                               value="{{ product['price'] }}"
+						>
+				  	</div>
+					{% if error %}
+						<p class="text-danger mt-3">{{ error }}</p>
+        			{% endif %}
+				  	<button type="submit" class="btn btn-primary text-center   mt-3   w-25">Change product</button>
+				</form>
+			</div>
+		</div>
+	</main>
+{% endblock %}

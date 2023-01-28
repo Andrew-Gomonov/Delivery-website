@@ -1,11 +1,15 @@
-#title:hover {
+#link:hover {
     color: #ec5535 !important;
 }
 
-section {
-  height: 40em !important;
-  text-overflow: ellipsis;
-  overflow: hidden;
+.orders {
+    font-size: 15px;
+    border: none !important;
+}
+
+.dropdown-menu-right {
+    right: 0 !important;
+    left: auto !important;
 }
 
 #content {
@@ -15,3 +19,33 @@ section {
     overflow: hidden;
 }
 
+
+
+.no-border {
+    border: none !important;
+    box-shadow: none;
+}
+
+.create-order {
+    align-self: flex-end !important;
+    font-size: 5px;
+}
+
+/* big tablet */
+@media screen and (max-width: 991px) {
+
+}
+
+
+/* medium tablet */
+@media screen and (max-width: 767px) {
+/* стили для средних планшетов - начало */
+
+}
+
+/* phone */
+@media screen and (max-width: 479px) {
+    .orders {
+        font-size: 7px !important;
+    }
+}

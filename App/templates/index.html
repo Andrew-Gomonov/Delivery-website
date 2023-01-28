@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <main class="container" style="margin-bottom: 10%;margin-top:10%;">
 	{%if newsList%}
@@ -8,9 +7,9 @@
 			<img class="card-img-top " src="{{news['image']}}" alt="profile picture" style="height:412px;">
 				<div class="card-body">
 					<h2 class="card-title">
-						<a class="text-decoration-none link-dark" href="/news/{{news['id']}}" id="title">{{news['title']}}</a>
+						<a class="text-decoration-none link-dark" href="/news/{{news['id']}}" id="link">{{news['title']}}</a>
 					</h2>
-					<p class="card-text overflow-hidden" id="content">{{news['content']}}</p>
+					<p class="card-text" id="content">{{news['content']}}</p>
 					<h5 class="card-text text-muted">Author {{news['author']}}</h5>
 					<time class="card-text text-muted">{{news['datetime']}}</time>
 				</div>

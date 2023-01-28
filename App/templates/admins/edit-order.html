@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block head %}
+	<script src="{{url_for('static', filename='js/products.js')}}" defer></script>
+{% endblock %}
+
+{% block content %}
+<main class="container" style="margin-top: 12%;margin-bottom: 8%;">
+	<form action="{{ url_for('main.edit_order',order=order.id) }}" method="post"  class="d-flex align-items-center flex-column">
+		  <div class="form-group text-center">
+				<label for="products" class="h5">Products</label>
+				<div id="products">
+					<div class="product-entry d-flex align-items-center flex-row">
+						<input type="number" class="form-control"
+                               placeholder="Enter vendor code" name="product_vendor_code"
+                               value="{{ order.products[0].vendor_code }}" required>
+						<input type="number" class="form-control"
+                               id="quantity" placeholder="Enter quantity"
+                               style="margin-left: 5px" name="product_quantity"
+                               min="1" required
+                               value="{{ order.products[0].quantity }}"
+                        >
+					</div>
+                    {% for i in range(1,order.products|length) %}
+                        <div class="product-entry d-flex align-items-center flex-row" style="width:106.5%;">
+                                <input type="number" class="form-control"
+                                   placeholder="Enter vendor code" name="product_vendor_code"
+                                   value="{{ order.products[i].vendor_code }}" required>
+                                <input type="number" class="form-control"
+                                       id="quantity" placeholder="Enter quantity"
+                                       style="margin-left: 5px" name="product_quantity"
+                                       min="1" required
+                                       value="{{ order.products[i].quantity }}"
+                                >
+                                <button class="delete-button btn btn-danger btn-sm rounded-1" type="button"
+                                        data-toggle="tooltip" style="margin-left: 5px">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+					    </div>
+                    {% endfor %}
+					<button type="button" class="btn btn-secondary add-product mt-3" style="font-size:13px;">Add another product</button>
+					{% if not_found %}
+						<p class="text-danger">{{ not_found }}</p>
+					{% endif %}
+				</div>
+		  	</div>
+		  	<div class="form-group mt-5 w-50">
+				<label for="customer_name">Customer name</label>
+				<input type="text" class="form-control"
+                       id="customer_name" name="order_customer_name"
+                       placeholder="Enter customer name" value="{{ order.customer.name }}" required
+                >
+		  	</div>
+		  	<div class="form-group mt-3 w-50">
+				<label for="total_price">Order total price</label>
+				<input type="number" class="form-control"
+                       id="total_price" name="order_total_price" placeholder="Enter order total price"
+                       value="{{ order.total_price }}" required>
+		  	</div>
+            <div class="form-group mt-3 w-50">
+				<label for="phone">Customer phone number</label>
+				<input type="tel" class="form-control"
+                       id="phone" name="order_phone_number" placeholder="Enter customer phone number"
+                       value="{{ order.customer.phone }}" required>
+		  	</div>
+		  	<div class="form-group mt-3 w-50">
+				<label for="address">Customer address</label>
+				<input type="text" class="form-control" id="address"
+                       name="order_address" placeholder="Enter customer address"
+                       value="{{ order.customer.address }}" required>
+		  	</div>
+		  	<div class="form-group mt-3 w-50">
+    			<label for="deliver_time">Deliver at what time</label>
+    			<input type="text" class="form-control"
+                       id="deliver_time" name="order_deliver_time"
+                       placeholder="Enter deliver time"
+                       value="{{ order.deliver_time }}"
+                >
+		  	</div>
+			{% if error %}
+    			<p class="text-danger m-2">{{ error }}</p>
+  			{% endif %}
+			<button type="submit" class="btn btn-primary w-25  mt-4">Edit Order</button>
+	</form>
+</main>
+{% endblock %}

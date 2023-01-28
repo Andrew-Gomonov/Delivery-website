@@ -1,33 +1,33 @@
 import bcrypt
-from App import api
+from App import core
 from datetime import date
 import unittest
 
 
 class TestApi(unittest.TestCase):
     def test_get_all_news(self):
-        news = api.get_news()
+        news = core.get_news()
         self.assertIsInstance(news, list)
 
     def test_get_all_users(self):
-        users = api.get_news()
+        users = core.get_news()
         self.assertIsInstance(users, list)
 
     def test_create_news(self):
         news1 = {
             "title": "testing",
-            "content": "testing api",
+            "content": "testing core",
             "image": "https://st.depositphotos.com/1032577/3238/i/950/depositphotos_32382611-stock-photo-test.jpg"
         }
         news2 = {
             "title": "testing",
-            "content": "testing api",
+            "content": "testing core",
         }
-        data = api.create_news(news1)
+        data = core.create_news(news1)
         self.assertIsInstance(data, dict)
         self.assertDictEqual(data, {"Code": 201, "msg": "News created"})
         with self.assertRaises(KeyError):
-            api.create_news(news2)
+            core.create_news(news2)
 
     def test_create_user(self):
         user1 = {
@@ -40,16 +40,16 @@ class TestApi(unittest.TestCase):
             "name": "testing",
             "email": "testing@gmail.com",
         }
-        data = api.create_user(user1)
+        data = core.create_user(user1)
         self.assertIsInstance(data, dict)
         self.assertDictEqual(data, {"Code": 201, "msg": "User created"})
         with self.assertRaises(KeyError):
-            api.create_user(user2)
+            core.create_user(user2)
 
     def test_crud_news(self):
-        all_news = api.get_news()
+        all_news = core.get_news()
         last_id = all_news[-1]['id']
-        last_news = api.News(int(last_id))
+        last_news = core.News(int(last_id))
         info_last_news = last_news.get()
         self.assertIsInstance(info_last_news, dict)
         self.assertDictEqual(
@@ -57,7 +57,7 @@ class TestApi(unittest.TestCase):
             {
                 "id": all_news[-1]['id'],
                 "title": "testing",
-                "content": "testing api",
+                "content": "testing core",
                 "publish_date": date.today().strftime('%Y-%m-%d'),
                 "image_url": "https://st.depositphotos.com/1032577/3238/i/950/"
                              "depositphotos_32382611-stock-photo-test.jpg"
@@ -71,15 +71,15 @@ class TestApi(unittest.TestCase):
         self.assertIsInstance(delete, dict)
         self.assertDictEqual(delete, {"Code": 200, "msg": "News deleted successfully"})
         is_deleted = True
-        for news in api.get_news():
+        for news in core.get_news():
             if news['id'] == last_id:
                 is_deleted = False
         self.assertTrue(is_deleted)
 
     def test_crud_users(self):
-        all_users = api.get_users()
+        all_users = core.get_users()
         last_id = all_users[-1]['id']
-        last_user = api.User(int(last_id))
+        last_user = core.User(int(last_id))
         info_last_user = last_user.get()
         self.assertIsInstance(info_last_user, dict)
         self.assertDictEqual(
@@ -103,7 +103,7 @@ class TestApi(unittest.TestCase):
         self.assertIsInstance(delete, dict)
         self.assertDictEqual(delete, {"Code": 200, "msg": "User deleted successfully"})
         is_deleted = True
-        for user in api.get_users():
+        for user in core.get_users():
             if user['id'] == last_id:
                 is_deleted = False
         self.assertTrue(is_deleted)

@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block head %}
+    <script src="{{url_for('static', filename='js/comment-order.js')}}" defer></script>
+{% endblock %}
+{% block content %}
+	<main class="container-fluid justify-content-center" style="margin-top:10%;">
+		<div class="d-flex flex-column">
+            {% if user.is_admin %}
+            <div class="d-flex flex-row align-self-end">
+				<a href="/create-new-order" class="d-flex align-self-sm-end btn btn-primary" style="margin-right: 5px;">
+					Create new order
+				</a>
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Export as csv
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url_for('main.export_table_as_csv',page=current_page) }}">Current page</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.export_table_as_csv') }}">All orders</a></li>
+                  </ul>
+                </div>
+            </div>
+			{% endif %}
+            <!-- Modal -->
+            <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="comment order" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Comment order</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      {% if user.is_admin == 0 %}
+                          <form action="{{ url_for('main.comment_order_page') }}" method="POST">
+                              <div class="form-group">
+                                <label for="new-comment">Comment</label>
+                                <textarea class="form-control" rows="8" id="new-comment" name="comment" placeholder="Example: all be okay" style="resize: none"></textarea>
+                              </div>
+                              <input type="hidden" id="order_id" name="order_id">
+                              <button type="submit" class="btn w-100 mt-5 btn-primary">Give comment</button>
+                          </form>
+                      {% else %}
+                          <p id="courier-comment"></p>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <section class="orders card m-3">
+                <div class="card-body">
+                    <table class="table table-hover" >
+                    <thead>
+                        <tr class="table-dark">
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Delivery time</th>
+                            <th>Courier</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% if orders %}
+                            {% for order in orders %}
+                                <tr>
+                                    <th scope="row">{{ order['date_placed'].date()}}</th>
+                                    <td>{{ order['customer_name']}}</td>
+                                    <td>
+                                        {% for product in order['products'] %}
+                                            <a class="text-decoration-none link-dark" id="link" href="{{url_for('main.product_page',product_id=product[7])}}">
+                                                ({{product[2]}})
+                                            </a>
+                                        {% endfor %}
+                                    </td>
+                                    <td>{% for product in order['products'] %}({{product[5]}}) {% endfor %}</td>
+                                    <td>{{ order['customer_phone'] }}</td>
+                                    <td>{{ order['customer_address'] }}</td>
+                                    <td>{{ order['status'] }}</td>
+                                    <td>{{ order['deliver_time'] }}</td>
+                                    <td>{{ order['courier_name'] }}</td>
+                                    <td>{{ order['total_price'] }}</td>
+                                    <td>
+                                        {% if user.is_admin %}
+                                            <a class="btn btn-success btn-sm rounded-1" href="{{ url_for('main.edit_order',order=order['order_id']) }}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-danger btn-sm rounded-1" href="{{ url_for('main.delete_order_page',order=order['order_id']) }}">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            {% if order['comment'] %}
+                                             <a class="btn btn-dark btn-sm rounded-1" data-bs-toggle="modal"
+                                                data-bs-target="#commentModal" data-bs-comment="{{ order['comment'] }}" data-bs-order-id="{{ order['order_id'] }}">
+                                                    <i class="fa fa-comment"></i>
+                                             </a>
+                                             {% endif %}
+                                        {% else %}
+                                            {% if order['status'] == "pending"%}
+                                                <a class="btn btn-primary btn-sm rounded-1 d-flex justify-content-center align-self-center" href="/start-order?order={{ order['order_id']}}">
+                                                    <i class="fa fa-play"></i>
+                                                </a>
+                                            {% elif order['status'] == "In progress" %}
+                                                <a class="btn btn-success btn-sm rounded-1 d-flex justify-content-center align-self-center" href="/end-order?order={{ order['order_id']}}">
+                                                    <i class="fa fa-check"></i>
+                                                </a>
+                                            {% else %}
+                                                <a class="btn btn-dark btn-sm rounded-1 d-flex
+                                                justify-content-center align-self-center" data-bs-toggle="modal"
+                                                data-bs-target="#commentModal" data-bs-comment="{{ order['comment'] }}"
+                                                data-bs-order-id="{{ order['order_id'] }}"
+                                                data-bs-permission-to-comment="{{ order['courier_id'] == user.id }}">
+                                                    <i class="fa fa-comment"></i>
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                      {% else %}
+                            <tr>
+                                <td class="text-center text-danger h3" colspan="11">No orders</td>
+                            </tr>
+                      {% endif %}
+
+                      </tbody>
+                    </table>
+                </div>
+            <nav aria-label="Pages">
+              <ul class="pagination  justify-content-center">
+              {% if current_page-1 <= 0 %}
+                <li class="page-item disabled">
+                  <a class="page-link">Previous</a>
+                </li>
+              {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="{{ url_for('main.orders_page',page=current_page-1) }}">Previous</a>
+                  </li>
+              {% endif %}
+                    {% for i in range(1,last_page) %}
+                        {% if i == current_page %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="#">{{ i }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('main.orders_page',page=i) }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+              {% if current_page + 1 >= last_page %}
+                <li class="page-item disabled">
+                  <a class="page-link">Next</a>
+                </li>
+              {% else %}
+                  <li class="page-item">
+                  <a class="page-link" href="{{ url_for('main.orders_page',page=current_page + 1) }}">Next</a>
+                </li>
+              {% endif %}
+              </ul>
+            </nav>
+            </section>
+		</div>
+	</main>
+{% endblock %}

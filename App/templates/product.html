@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main class="container" style="margin-top: 8%;margin-bottom: 8%;">
+        <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card">
+            <img src="{{ url_for('static',filename=product['image']) }}" class="card-img-top" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title">{{ product['name'] }}</h5>
+              <p class="card-text">{{ product['description'] }}</p>
+              <h6 class="text-muted">{{ product['price'] }} Lei</h6>
+            </div>
+          </div>
+        </div>
+        </div>
+    </main>
+{% endblock %}

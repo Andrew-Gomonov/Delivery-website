@@ -1,14 +1,10 @@
 {% extends 'base.html' %}
-{% block head %}
-	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/news.css')}}">
-{% endblock %}
-
 {% block content %}
 <main class="container" style="margin-top: 5%">
 <div class="news">
 	{% if news %}
 		<div class="card mb-3 h-1">
-			<img class="card-img-top" src="{{news['image']}}">
+			<img class="card-img-top" alt="news picture" src="{{news['image']}}">
 				<div class="card-body">
 					<h2 class="card-title">{{news['title']}}</h2>
 					<p class="card-text">{{news['content']}}</p>

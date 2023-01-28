@@ -25,10 +25,11 @@
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" class="form-control" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-25 mt-5">Log in</button>
+                <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
                 {% if error %}
-                    <p class="text-danger">{{ error }}</p>
+                    <p class="text-danger mt-3">{{ error }}</p>
                 {% endif %}
+                <button type="submit" class="btn btn-primary w-25 mt-3">Log in</button>
             </form>
         </div>
     </div>

@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% block head %}
-	<script src="{{url_for('static', filename='js/add_product.js')}}" defer></script>
+	<script src="{{url_for('static', filename='js/products.js')}}" defer></script>
 {% endblock %}
 
 {% block content %}
 <main class="container" style="margin-top: 12%;margin-bottom: 8%;">
-	<form action="/create-new-order" method="post"  class="d-flex align-items-center flex-column">
+	<form action="{{ url_for('main.create_new_order') }}" method="post"  class="d-flex align-items-center flex-column">
 		  <div class="form-group text-center">
 				<label for="products" class="h5">Products</label>
 				<div id="products">
 					<div class="product-entry d-flex align-items-center flex-row">
-						<input type="number" class="form-control" placeholder="Enter vendor code" name="order_vendor_code" required>
-						<input type="number" class="form-control" id="quantity" placeholder="Enter quantity" style="margin-left: 5px" name="order_quantity" min="1" required>
+						<input type="number" class="form-control" placeholder="Enter vendor code" name="product_vendor_code" required>
+						<input type="number" class="form-control" id="quantity" placeholder="Enter quantity" style="margin-left: 5px" name="product_quantity" min="1" required>
 					</div>
 					<button type="button" class="btn btn-secondary add-product mt-3" style="font-size:13px;">Add another product</button>
 					{% if not_found %}
@@ -21,14 +21,14 @@
 		  	</div>
 		  	<div class="form-group mt-5 w-50">
 				<label for="customer_name">Customer name</label>
-				<input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter customer name" required>
+				<input type="text" class="form-control" id="customer_name" name="order_customer_name" placeholder="Enter customer name" required>
 		  	</div>
 		  	<div class="form-group mt-3 w-50">
-				<label for="phone">Phone Number</label>
+				<label for="phone">Customer phone number</label>
 				<input type="tel" class="form-control" id="phone" name="order_phone_number" placeholder="Enter phone number" required>
 		  	</div>
 		  	<div class="form-group mt-3 w-50">
-				<label for="address">Address</label>
+				<label for="address">Customer address</label>
 				<input type="text" class="form-control" id="address" name="order_address" placeholder="Enter address" required>
 		  	</div>
 		  	<div class="form-group mt-3 w-50">
