@@ -4,6 +4,9 @@ from App.core.models import News, User
 from App.core.news import get_news, create_news
 from App.core.users import get_users, create_user
 from App.core.tokens import dev_token_required
+from App.errors.api import APIBadRequestError
+import json
+from json.decoder import JSONDecodeError
 
 
 @bp.route('/api/news', methods=['GET', 'POST'])
@@ -64,7 +67,15 @@ def user_api_page(user_id):
     if request.method == 'GET':
         data = user.to_dict()
     elif request.method == "PUT":
-        user.edit(request.form)
+        request_data = request.get_data().decode()
+        if len(request_data) == 0:
+            raise APIBadRequestError('Request does not contain data')
+        else:
+            try:
+                data = json.loads(request_data)
+            except JSONDecodeError:
+                raise APIBadRequestError('Request data does not in JSON format')
+        user.edit(data)
         data['message'] = "User updated"
     else:
         user.delete()
